@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Learning_csharp {
     internal class Basic_3 {
@@ -30,11 +32,41 @@ namespace Learning_csharp {
             //person1.Park();
 
             // 显式实现接口方法
-            WarmKiller warmKiller = new WarmKiller();
-            warmKiller.Love();
-            // 必须是IKiller的实例才可以调用显示实现的接口
-            IKiller killer = warmKiller as IKiller;
-            killer.Kill();
+            //WarmKiller warmKiller = new WarmKiller();
+            //warmKiller.Love();
+            //// 必须是IKiller的实例才可以调用显示实现的接口
+            //IKiller killer = warmKiller as IKiller;
+            //killer.Kill();
+
+            //// 反射
+            //ITank tank = new HeavyTank();
+            //var t = tank.GetType();
+            //object o = Activator.CreateInstance(t);
+            //MethodInfo fireMi = t.GetMethod("Fire");
+            //MethodInfo RunMi = t.GetMethod("Run");
+            //fireMi.Invoke(o, null);
+            //RunMi.Invoke(o, null);
+
+            //// 依赖注入（类似java里的Autowired）
+            //var sc = new ServiceCollection();
+            //sc.AddScoped(typeof(ITank), typeof(HeavyTank));
+            //var sp = sc.BuildServiceProvider();
+            //ITank tank = sp.GetService<ITank>();
+            //tank.Fire();
+            //tank.Run();
+            //tank.Stop();
+
+            //// 依赖注入2
+            //var sc = new ServiceCollection();
+            //sc.AddScoped(typeof(ITank), typeof(HeavyTank));
+            //sc.AddScoped(typeof(IVehicle), typeof(LightTank));
+            //sc.AddScoped<PersonWhoHasAVehicle>();
+            //var sp = sc.BuildServiceProvider();
+            //PersonWhoHasAVehicle person = sp.GetService<PersonWhoHasAVehicle>();
+            //person.Drive();
+            //person.Park();
+
+
 
         }
     }
