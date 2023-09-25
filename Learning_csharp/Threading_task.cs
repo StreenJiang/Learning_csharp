@@ -19,8 +19,11 @@ namespace Learning_csharp {
                 tasks.Add(Task.Factory.StartNew(() => Console.WriteLine("Doing some other work 2....")));
                 tasks.Add(Task.Factory.StartNew(() => Console.WriteLine("Doing some other work 3....")));
 
+                // 添加一个task，测试cancel token
+                tasks.Add(Task.Factory.StartNew(() => DoSomething(source.Token)));
+
                 // 主动cancel
-                source.Cancel();
+                //source.Cancel();
 
                 Task.WaitAll(tasks.ToArray());
 
@@ -37,8 +40,27 @@ namespace Learning_csharp {
                 // Parallel是本身是阻塞的
                 Console.WriteLine("after Parallel");
             } catch (Exception ex) {
+                // 主动 cancel 后就会抛出异常，会直接跳到这里
                 Console.WriteLine(ex.GetType());
             }
+
+            //// 使用Parallel时，task没完成会等待其完成
+            //Parallel.Invoke(() => {
+            //    while (true) {
+            //        Console.WriteLine("这是个死循环，没办法结束");
+            //        Thread.Sleep(1000);
+            //    }
+            //});
+
+            // 使用Task创建task时，task没完成也会继续往下执行
+            Task.Factory.StartNew(() => {
+                while (true) {
+                    Console.WriteLine("随时可以按任意键结束");
+                    Thread.Sleep(1000);
+                }
+            });
+            Console.ReadKey();
+
              
        }
 

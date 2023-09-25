@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,43 +11,61 @@ namespace Learning_csharp {
             var source = new CancellationTokenSource();
             List<Task> tasks = new List<Task>();
             try {
-                // ʹ�� async��await ������Task����
-                tasks.Add(MakeTea(source.Token));
+                // 使用 async和await 创建的Task任务
+                tasks.Add(MakeTea());
 
-                //// ʹ��Task.Factory������Task����
-                //tasks.Add(Task.Factory.StartNew(() => Console.WriteLine("Doing some other work 1....")));
-                //tasks.Add(Task.Factory.StartNew(() => Console.WriteLine("Doing some other work 2....")));
-                //tasks.Add(Task.Factory.StartNew(() => Console.WriteLine("Doing some other work 3....")));
+                // 使用Task.Factory创建的Task任务
+                tasks.Add(Task.Factory.StartNew(() => Console.WriteLine("Doing some other work 1....")));
+                tasks.Add(Task.Factory.StartNew(() => Console.WriteLine("Doing some other work 2....")));
+                tasks.Add(Task.Factory.StartNew(() => Console.WriteLine("Doing some other work 3....")));
 
-                // ����cancel
-                source.Cancel();
+                // 添加一个task，测试cancel token
+                tasks.Add(Task.Factory.StartNew(() => DoSomething(source.Token)));
+
+                // 主动cancel
+                //source.Cancel();
+
+                Task.WaitAll(tasks.ToArray());
+
+                // 使用Parallel.foreach
+                List<int> intList = new List<int>() {1, 23, 234, 5, 31, 34, 5, 12, 3, 345, 123, 123, 25, 34, 234};
+                Parallel.ForEach(intList, num => {
+                    Thread.Sleep(200);
+                    Console.WriteLine(num);
+                });
+
+                // 使用Parallel.for
+                Parallel.For(0, 20, num => Console.WriteLine(num));
+
+                // Parallel是本身是阻塞的
+                Console.WriteLine("after Parallel");
             } catch (Exception ex) {
+                // 主动 cancel 后就会抛出异常，会直接跳到这里
                 Console.WriteLine(ex.GetType());
             }
-            
-            Task.WaitAll(tasks.ToArray());
 
-            // ʹ��Parallel.foreach
-            List<int> intList = new List<int>() {1, 23, 234, 5, 31, 34, 5, 12, 3, 345, 123, 123, 25, 34, 234};
-            Parallel.ForEach(intList, num => {
-                Thread.Sleep(200);
-                Console.WriteLine(num);
+            //// 使用Parallel时，task没完成会等待其完成
+            //Parallel.Invoke(() => {
+            //    while (true) {
+            //        Console.WriteLine("这是个死循环，没办法结束");
+            //        Thread.Sleep(1000);
+            //    }
+            //});
+
+            // 使用Task创建task时，task没完成也会继续往下执行
+            Task.Factory.StartNew(() => {
+                while (true) {
+                    Console.WriteLine("随时可以按任意键结束");
+                    Thread.Sleep(1000);
+                }
             });
+            Console.ReadKey();
 
-            // ʹ��Parallel.for
-            Parallel.For(0, 20, num => Console.WriteLine(num));
+             
+       }
 
-            // Parallel�Ǳ�����������
-            Console.WriteLine("after Parallel");
-        }
-
-        public async Task<string> MakeTea(CancellationToken token) {
+        public async Task<string> MakeTea() {
             var boilingWater = BoilWater();
-            if (token.IsCancellationRequested) {
-                Console.WriteLine("Cacellation requested");
-                token.ThrowIfCancellationRequested();
-            }
-
             Console.WriteLine("take the cups out");
             Console.WriteLine("put tea in cups");
 
@@ -68,6 +86,16 @@ namespace Learning_csharp {
             return "water";
         }
 
+        public void DoSomething(CancellationToken token) {
+            if (token.IsCancellationRequested) {
+                Console.WriteLine("Cancellation requested.");
+                token.ThrowIfCancellationRequested();
+            }
+            for (int i = 0; i < 10; i++) {
+                Console.WriteLine("i = {0}", i);
+                Thread.Sleep(200);
+            }
+        }
     }
 
 }
