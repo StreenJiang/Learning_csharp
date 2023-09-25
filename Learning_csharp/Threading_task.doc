@@ -1,0 +1,73 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks; // Task Parallel Library => TPL
+
+namespace Learning_csharp {
+    public class ThreadingTask {
+
+        public void Run() {
+            var source = new CancellationTokenSource();
+            List<Task> tasks = new List<Task>();
+            try {
+                // 使用 async和await 创建的Task任务
+                tasks.Add(MakeTea(source.Token));
+
+                //// 使用Task.Factory创建的Task任务
+                //tasks.Add(Task.Factory.StartNew(() => Console.WriteLine("Doing some other work 1....")));
+                //tasks.Add(Task.Factory.StartNew(() => Console.WriteLine("Doing some other work 2....")));
+                //tasks.Add(Task.Factory.StartNew(() => Console.WriteLine("Doing some other work 3....")));
+
+                // 主动cancel
+                source.Cancel();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.GetType());
+            }
+            
+            Task.WaitAll(tasks.ToArray());
+
+            // 使用Parallel.foreach
+            List<int> intList = new List<int>() {1, 23, 234, 5, 31, 34, 5, 12, 3, 345, 123, 123, 25, 34, 234};
+            Parallel.ForEach(intList, num => {
+                Thread.Sleep(200);
+                Console.WriteLine(num);
+            });
+
+            // 使用Parallel.for
+            Parallel.For(0, 20, num => Console.WriteLine(num));
+
+            // Parallel是本身是阻塞的
+            Console.WriteLine("after Parallel");
+        }
+
+        public async Task<string> MakeTea(CancellationToken token) {
+            var boilingWater = BoilWater();
+            if (token.IsCancellationRequested) {
+                Console.WriteLine("Cacellation requested");
+                token.ThrowIfCancellationRequested();
+            }
+
+            Console.WriteLine("take the cups out");
+            Console.WriteLine("put tea in cups");
+
+            var water = await boilingWater;
+
+            var tea = $"pour {water} in cups";
+            Console.WriteLine(tea);
+            return tea;
+        }
+
+        public async Task<string> BoilWater() {
+            Console.WriteLine("start the kettle");
+            Console.WriteLine("waiting for the kettle");
+
+            await Task.Delay(2000);
+
+            Console.WriteLine("kettle finished boiling");
+            return "water";
+        }
+
+    }
+
+}

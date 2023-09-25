@@ -124,9 +124,17 @@ namespace Learning_csharp {
             //Basic_2 basic_2 = new Basic_2();
             //basic_2.run();
 
-            // Basic_2.class
-            Basic_3 basic_3 = new Basic_3();
-            basic_3.run();
+            //// Basic_2.class
+            //Basic_3 basic_3 = new Basic_3();
+            //basic_3.run();
+
+            //// Multi_threading.cs
+            //Multi_threading multi_threading = new Multi_threading();
+            //multi_threading.Run();
+
+            // ThreadingTask.cs
+            ThreadingTask threadingTask = new ThreadingTask();
+            threadingTask.Run();
 
         }
 
