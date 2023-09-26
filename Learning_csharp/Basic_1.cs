@@ -132,9 +132,13 @@ namespace Learning_csharp {
             //Multi_threading multi_threading = new Multi_threading();
             //multi_threading.Run();
 
-            // ThreadingTask.cs
-            ThreadingTask threadingTask = new ThreadingTask();
-            threadingTask.Run();
+            //// ThreadingTask.cs
+            //ThreadingTask threadingTask = new ThreadingTask();
+            //threadingTask.Run();
+
+            // Socket_learning.cs
+            Socket_learning socket_Learning = new Socket_learning();
+            socket_Learning.Run();
 
         }
 
