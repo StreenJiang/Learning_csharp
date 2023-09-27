@@ -66,6 +66,7 @@ namespace Learning_csharp {
                         string msgInLoop = ParseBytesToString(msgBytes, lenInLoop);
                         string msgHead = msgInLoop.Substring(0, 8);
 
+                        Console.WriteLine("=============================================================================");
                         switch (msgHead) {
                             case "55AA2781":
                                 // 拧紧扭力
@@ -121,6 +122,7 @@ namespace Learning_csharp {
                         Console.WriteLine(ex.StackTrace);
                         Thread.Sleep(100);
                     }
+                    Console.WriteLine("=============================================================================");
                 }
             } catch (Exception ex) {
                 Console.WriteLine(ex.StackTrace);

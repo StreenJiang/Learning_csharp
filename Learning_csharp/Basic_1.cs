@@ -128,17 +128,21 @@ namespace Learning_csharp {
             //Basic_3 basic_3 = new Basic_3();
             //basic_3.run();
 
-            //// Multi_threading.cs
+            //// 多线程、线程池
             //Multi_threading multi_threading = new Multi_threading();
             //multi_threading.Run();
 
-            //// ThreadingTask.cs
+            //// 任务机制
             //ThreadingTask threadingTask = new ThreadingTask();
             //threadingTask.Run();
 
-            // Socket_learning.cs
-            Socket_learning socket_Learning = new Socket_learning();
-            socket_Learning.Run();
+            //// socket编程（客户端）
+            //Socket_learning socket_Learning = new Socket_learning();
+            //socket_Learning.Run();
+
+            // 序列化、反序列化
+            Serialization serialization = new Serialization();
+            serialization.Run();
 
         }
 
