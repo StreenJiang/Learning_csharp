@@ -1,4 +1,6 @@
 ﻿// 命名空间
+using Learning_csharp_WinForm;
+
 namespace Learning_csharp {
 
     class MainClass {
@@ -140,10 +142,17 @@ namespace Learning_csharp {
             //Socket_learning socket_Learning = new Socket_learning();
             //socket_Learning.Run();
 
-            // 序列化、反序列化
-            Serialization serialization = new Serialization();
-            serialization.Run();
+            //// 序列化、反序列化
+            //Serialization serialization = new Serialization();
+            //serialization.Run();
 
+            //// 加密、解密
+            //Encryption encryption = new Encryption();
+            //encryption.Run();
+
+            // Winform第一个窗体
+            Winform_Form_1 winform_Form_1 = new Winform_Form_1();
+            winform_Form_1.ShowDialog();
         }
 
         // 值类型参数、引用类型参数
